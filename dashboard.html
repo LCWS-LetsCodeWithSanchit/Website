@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyberpunk Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+  <div class="login-wrapper">
+    <h1 style="color:#ff00ff;text-align:center;text-shadow:0 0 10px #ff00ff,0 0 20px #0ff;">Welcome, Sanchit!</h1>
+    <p style="color:#0ff;text-align:center;">This is your random dashboard. Change it as you like!</p>
+    <button id="logout-btn" class="google-btn">Logout</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    // Firebase setup
+    const firebaseConfig = {
+      apiKey: "AIzaSyDNSat31gtkEoeXB7R9-DWICubl7u_xOlQ",
+      authDomain: "otp1-3d23c.firebaseapp.com",
+      projectId: "otp1-3d23c",
+      storageBucket: "otp1-3d23c.appspot.com",
+      messagingSenderId: "471453612085",
+      appId: "1:471453612085:web:11aa0034ebee098520d97c"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', ()=>{
+      auth.signOut().then(()=>{
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+
+  <script>
+    // Optional: Reuse particle background on dashboard
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray = [];
+    const particleCount = 80;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random()*3+1;
+        this.speedX = Math.random()*1-0.5;
+        this.speedY = Math.random()*1-0.5;
+        this.color = ['#0ff','#ff00ff','#00ff00','#ffff00'][Math.floor(Math.random()*4)];
+      }
+      update(){
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if(this.x>canvas.width) this.x=0;
+        if(this.x<0) this.x=canvas.width;
+        if(this.y>canvas.height) this.y=0;
+        if(this.y<0) this.y=canvas.height;
+      }
+      draw(){
+        ctx.fillStyle=this.color;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles(){
+      particlesArray=[];
+      for(let i=0;i<particleCount;i++) particlesArray.push(new Particle());
+    }
+
+    function animateParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      particlesArray.forEach(p=>{p.update(); p.draw();});
+      requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize',()=>{
+      canvas.width=window.innerWidth;
+      canvas.height=window.innerHeight;
+      initParticles();
+    });
+    initParticles();
+    animateParticles();
+  </script>
+</body>
+</html>
