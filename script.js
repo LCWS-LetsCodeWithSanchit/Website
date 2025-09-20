@@ -1,5 +1,3 @@
-// Google Login/Signup
-// =======================
 // =======================
 // Firebase Setup
 // =======================
@@ -80,28 +78,33 @@ auth.onAuthStateChanged(user => {
 });
 
 // =======================
-// Google Login
+// Google Login with persistent session
 // =======================
 const googleLoginBtn = document.getElementById('google-login');
 const loginMsg = document.getElementById('login-msg');
 const loginLoader = document.getElementById('login-loader');
 
-googleLoginBtn.addEventListener('click', ()=>{
+googleLoginBtn.addEventListener('click', () => {
   loginLoader.style.display = 'block';
-  const provider = new firebase.auth.GoogleAuthProvider();
 
-  auth.signInWithPopup(provider)
-    .then(result=>{
+  // Set persistent auth (LOCAL = survives refresh and browser close)
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      return auth.signInWithPopup(provider);
+    })
+    .then(result => {
       loginLoader.style.display = 'none';
       const user = result.user;
       loginMsg.style.color = '#00ff99';
       loginMsg.textContent = `✅ Logged in as ${user.displayName}`;
-      
-      setTimeout(()=>{
+
+      // Redirect to dashboard after 1 second
+      setTimeout(() => {
         window.location.href = 'dashboard.html';
-      },1000);
+      }, 1000);
     })
-    .catch(err=>{
+    .catch(err => {
       loginLoader.style.display = 'none';
       loginMsg.style.color = 'red';
       loginMsg.textContent = `❌ Error: ${err.message}`;
