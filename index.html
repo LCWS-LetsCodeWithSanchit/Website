@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyberpunk Login & Sign-Up</title>
+  <title>Cyberpunk Google Login</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
   <canvas id="particles"></canvas>
@@ -14,47 +14,26 @@
   <div class="login-wrapper">
     <div class="login-card" id="login-card">
 
-      <!-- Login Form -->
+      <!-- Front: Login -->
       <div class="form-front">
         <h2>Access Portal</h2>
-        <form id="loginForm">
-          <div class="input-group">
-            <input type="text" id="username" required placeholder=" ">
-            <label>Email</label>
-          </div>
-          <div class="input-group">
-            <input type="password" id="password" required placeholder=" ">
-            <label>Password</label>
-          </div>
-          <button type="submit">Login</button>
-          <div id="login-loader" class="loader" style="display:none;"></div>
-          <p id="error-msg"></p>
-        </form>
+        <button id="google-login" class="google-btn">Sign in with Google</button>
+        <div id="login-loader" class="loader" style="display:none;"></div>
+        <p id="login-msg"></p>
         <p class="signup-link">New here? <a href="#" id="show-signup">Sign Up</a></p>
       </div>
 
-      <!-- Sign-Up Form -->
+      <!-- Back: Signup -->
       <div class="form-back">
         <h2>Create Account</h2>
-        <form id="signupForm">
-          <div class="input-group">
-            <input type="text" id="new-username" required placeholder=" ">
-            <label>Email</label>
-          </div>
-          <div class="input-group">
-            <input type="password" id="new-password" required placeholder=" ">
-            <label>Password</label>
-          </div>
-          <button type="submit">Sign Up</button>
-          <div id="signup-loader" class="loader" style="display:none;"></div>
-          <p id="signup-msg"></p>
-        </form>
+        <button id="google-signup" class="google-btn">Sign up with Google</button>
+        <div id="signup-loader" class="loader" style="display:none;"></div>
+        <p id="signup-msg"></p>
         <p class="signup-link">Already have an account? <a href="#" id="show-login">Login</a></p>
       </div>
 
     </div>
 
-    <!-- Social Action Buttons -->
     <div class="social-bar">
       <button class="like">👍 Like</button>
       <button class="comment">💬 Comment</button>
