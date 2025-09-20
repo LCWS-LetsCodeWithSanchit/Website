@@ -1,3 +1,17 @@
+      // =======================
+// Firebase Setup
+// =======================
+const firebaseConfig = {
+  apiKey: "AIzaSyDNSat31gtkEoeXB7R9-DWICubl7u_xOlQ",
+  authDomain: "otp1-3d23c.firebaseapp.com",
+  projectId: "otp1-3d23c",
+  storageBucket: "otp1-3d23c.firebasestorage.app",
+  messagingSenderId: "471453612085",
+  appId: "1:471453612085:web:11aa0034ebee098520d97c"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
 // =======================
 // Particle Background
 // =======================
@@ -5,7 +19,6 @@ const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
 let particlesArray = [];
 const particleCount = 80;
 
@@ -67,91 +80,60 @@ document.getElementById('show-login').addEventListener('click', e => {
 });
 
 // =======================
-// Firebase Setup
+// Google Login/Signup
 // =======================
-const firebaseConfig = {
-  apiKey: "AIzaSyDNSat31gtkEoeXB7R9-DWICubl7u_xOlQ",
-  authDomain: "otp1-3d23c.firebaseapp.com",
-  projectId: "otp1-3d23c",
-  storageBucket: "otp1-3d23c.firebasestorage.app",
-  messagingSenderId: "471453612085",
-  appId: "1:471453612085:web:11aa0034ebee098520d97c"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-// =======================
-// Loaders
-// =======================
-const signupLoader = document.getElementById('signup-loader');
-const loginLoader = document.getElementById('login-loader');
-
-// =======================
-// Signup Form
-// =======================
-const signupForm = document.getElementById('signupForm');
+const googleLoginBtn = document.getElementById('google-login');
+const googleSignupBtn = document.getElementById('google-signup');
+const loginMsg = document.getElementById('login-msg');
 const signupMsg = document.getElementById('signup-msg');
+const loginLoader = document.getElementById('login-loader');
+const signupLoader = document.getElementById('signup-loader');
 
-signupForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const email = document.getElementById('new-username').value.trim();
-  const password = document.getElementById('new-password').value.trim();
-  if (!email || !password) return;
+// Function to handle Google login/signup
+function googleAuth(button, msgElement, loader) {
+  button.addEventListener('click', () => {
+    loader.style.display = 'block';
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-  signupLoader.style.display = "block";
-  signupMsg.textContent = "";
+    auth.signInWithPopup(provider)
+      .then(result => {
+        loader.style.display = 'none';
+        const user = result.user;
+        msgElement.style.color = '#00ff99';
+        msgElement.textContent = `✅ Logged in as ${user.displayName} (${user.email})`;
 
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      const user = userCredential.user;
-      user.sendEmailVerification()
-        .then(() => {
-          signupLoader.style.display = "none";
-          signupMsg.textContent = "✅ Signup successful! Check your email to verify.";
-          signupMsg.style.color = "#00ff99";
-          signupForm.reset();
-        });
-    })
-    .catch(err => {
-      signupLoader.style.display = "none";
-      signupMsg.textContent = "❌ Error: " + err.message;
-      signupMsg.style.color = "red";
-    });
-});
+        // Optionally, you can redirect to a dashboard page
+        // window.location.href = 'dashboard.html';
+      })
+      .catch(error => {
+        loader.style.display = 'none';
+        msgElement.style.color = 'red';
+        msgElement.textContent = `❌ Error: ${error.message}`;
+        console.error(error);
+      });
+  });
+}
+
+// Attach Google auth to buttons
+googleAuth(googleLoginBtn, loginMsg, loginLoader);
+googleAuth(googleSignupBtn, signupMsg, signupLoader);
 
 // =======================
-// Login Form
+// Optional: Logout Button
 // =======================
-const loginForm = document.getElementById('loginForm');
-const loginMsg = document.getElementById('error-msg');
-
-loginForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const email = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  if (!email || !password) return;
-
-  loginLoader.style.display = "block";
-  loginMsg.textContent = "";
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      const user = userCredential.user;
-      loginLoader.style.display = "none";
-
-      if (user.emailVerified) {
-        loginMsg.textContent = "✅ Login Successful!";
-        loginMsg.style.color = "#00ff99";
-        loginForm.reset();
-      } else {
-        loginMsg.textContent = "⚠ Please verify your email before logging in.";
-        loginMsg.style.color = "orange";
-      }
-    })
-    .catch(err => {
-      loginLoader.style.display = "none";
-      loginMsg.textContent = "❌ Error: " + err.message;
-      loginMsg.style.color = "red";
-    });
+const logoutBtn = document.createElement('button');
+logoutBtn.textContent = 'Logout';
+logoutBtn.style.marginTop = '20px';
+logoutBtn.style.padding = '10px';
+logoutBtn.style.borderRadius = '10px';
+logoutBtn.style.border = '2px solid #ff0000';
+logoutBtn.style.background = 'transparent';
+logoutBtn.style.color = '#ff0000';
+logoutBtn.style.cursor = 'pointer';
+logoutBtn.addEventListener('click', () => {
+  auth.signOut().then(() => {
+    alert('Logged out successfully!');
+    location.reload(); // refresh to show login screen
+  });
 });
+document.body.appendChild(logoutBtn);
