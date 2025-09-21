@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+}
+
+body, html {
+  height: 100%;
+  background: #0d0d0d;
+  overflow: hidden;
+  color: #0ff;
+}
+
+/* Canvas background */
+#particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+
+/* Dashboard Wrapper */
+.login-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid #00ffff;
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 0 30px #0ff, 0 0 60px #ff00ff;
+  z-index: 1;
+  text-align: center;
+}
+
+/* Dashboard Title */
+.login-wrapper h2 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #ff00ff;
+}
+
+/* User info text */
+.login-wrapper p {
+  font-size: 16px;
+  margin: 12px 0;
+  color: #fff;
+}
+
+.login-wrapper strong {
+  color: #ff00ff;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+/* Neon Logout Button */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border-radius: 10px;
+  border: 2px solid #ff00ff;
+  background: transparent;
+  color: #0ff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: 0.3s;
+  box-shadow: 0 0 10px #0ff, 0 0 20px #ff00ff;
+}
+
+button:hover {
+  background: #0ff;
+  color: #000;
+  box-shadow: 0 0 30px #0ff, 0 0 50px #ff00ff;
+}
+
+/* Responsive Fix */
+@media (max-width: 450px) {
+  .login-wrapper {
+    width: 90%;
+    padding: 25px;
+  }
+}
